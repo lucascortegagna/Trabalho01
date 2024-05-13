@@ -1,4 +1,4 @@
-const Conquista = require("../models/conquista");
+const Conquista = require("../models/conquista")
 const ConquistasDAO = require('../models/dao/ConquistasDAO');
 
 class ConquistasController {
@@ -10,7 +10,7 @@ class ConquistasController {
     let conquista = new Conquista({ nome, descricao });
     let conquistaId = ConquistasDAO.criar(conquista);
 
-    // Faz o response para o browser
+    // Faz o response para a página
     if (conquistaId)
       res.status(201).json({ conquista: ConquistasDAO.buscarPorId(conquistaId) })
     else
@@ -19,10 +19,22 @@ class ConquistasController {
 
   // Lista todas as conquistas (READ)
   list(req, res) {
-    // Copia o array conquistaes
+    // Busca o parâmetro na URL
+    let nomeSearch = req.query.nomeSearch;
+    let descricaoSearch = req.query.descricaoSearch;
+
+    // Copia o array conquistas
     let listaConquistas = ConquistasDAO.listar().slice()
 
-    // Faz o response para o browser
+    // Filtra os resultados se tiver alguma query
+    if (nomeSearch) {
+      listaConquistas = listaConquistas.filter(conquista => conquista.nome.toUpperCase().includes(nomeSearch.toUpperCase()));
+    }
+    if (descricaoSearch) {
+      listaConquistas = listaConquistas.filter(conquista => conquista.descricao.toUpperCase().includes(descricao.toUpperCase()));
+    }
+
+    // Faz o response para a página
     if (listaConquistas.length === 0)
       res.status(200).json({ message: "Nenhum conquista encontrado" })
     else
@@ -50,13 +62,13 @@ class ConquistasController {
       if (req.body.nome) conquista.nome = req.body.nome
       if (req.body.descricao) conquista.descricao = req.body.descricao
 
-      // Atualiza a Conquista na persistência
+      // Atualiza a Conquista
       ConquistasDAO.atualizar(id, conquista)
-      // Faz o response para o browser
+      // Faz o response para a página
       res.status(200).json({ conquista: conquista });
     }
     else {
-      // Faz o response para o browser
+      // Faz o response para a página
       res.status(404).json({ message: 'Conquista não encontrado' });
     }
   }
@@ -68,23 +80,13 @@ class ConquistasController {
     if (ConquistasDAO.exist(id)) {
       ConquistasDAO.deletar(id);
 
-      // Faz o response para o browser
+      // Faz o response para a página
       res.status(200).send()
     }
     else {
-      // Faz o response para o browser
+      // Faz o response para a página
       res.status(404).json({ message: 'Conquista não encontrado' });
     }
-  }
-
-  // Recalcula a classificação dos jogadores
-  recalcularClassificacao(req, res) {
-    // Aqui você deve chamar a lógica necessária para recalcular a classificação dos jogadores
-    // Por exemplo, você pode chamar uma função do DAO responsável por realizar esse cálculo
-    // Em seguida, envie uma resposta adequada ao cliente
-    // Exemplo:
-    // ConquistasDAO.recalcularClassificacaoDosJogadores();
-    res.status(200).json({ message: "Classificação dos jogadores recalculada com sucesso" });
   }
 }
 

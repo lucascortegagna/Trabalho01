@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const partidasController = require('../controllers/PartidasController');
+const PartidasController = require('../controllers/PartidasController');
 
 // Rota para criar uma nova partida (CREATE)
-router.post('/', partidasController.create);
+router.post('/', PartidasController.create);
 
 // Rota para listar todas as partidas (READ)
-router.get('/', partidasController.list);
+router.get('/', PartidasController.list);
 
-// Rota para mostrar uma partida pelo ID (READ)
-router.get('/:id', partidasController.show);
+// Rota para mostrar uma partida específica (READ)
+router.get('/:id', PartidasController.show);
 
 // Rota para atualizar uma partida (UPDATE)
-router.put('/:id', partidasController.update);
+router.put('/:id', PartidasController.update);
 
 // Rota para deletar uma partida (DELETE)
-router.delete('/:id', partidasController.delete);
+router.delete('/:id', PartidasController.delete);
 
 module.exports = router;

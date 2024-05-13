@@ -1,7 +1,7 @@
 {
   "name": "projeto-base",
   "version": "1.0.0",
-  "description": "Um projeto base para uso na disciplina de desenvolvimento de APIs",
+  "description": "Trabalho de desenvolvimento de APIs",
   "main": "./src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,11 +12,12 @@
     "nodejs",
     "projeto-base-apis"
   ],
-  "author": "Aluno SENAI",
+  "author": "João Pedro Falchetti e Lucas Alves Scortegagna",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "express-generators": "^1.1.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

@@ -21,9 +21,8 @@ let conquistas = [
   new Conquista({ id: 17, nome: "Explorador das Profundezas", descricao: "Mergulhe até o fundo do abismo oceânico e retorne com um tesouro perdido" }),
   new Conquista({ id: 18, nome: "Herói dos Céus", descricao: "Salve uma cidade sitiada do ataque de dragões furiosos" }),
   new Conquista({ id: 19, nome: "Mestre das Poções", descricao: "Crie uma poção poderosa com ingredientes raros e mágicos" }),
-  new Conquista({ id: 20, nome: "Domador de Bestas", descricao: "Capture e domine uma besta lendária das terras selvagens" })
+  new Conquista({ id: 20, nome: "Domador de Bestas", descricao: "Capture e domine uma besta lendária das terras selvagens" })
 ];
-
 
 class ConquistasDAO {
   // Retorna a lista de conquistas
@@ -31,12 +30,12 @@ class ConquistasDAO {
     return conquistas;
   }
 
-  // Retorna um conquista filtrado peloa sua ID
+  // Retorna um conquista filtrado pela sua ID
   buscarPorId(id) {
     return conquistas.find(conquista => conquista.id === id);
   }
 
-  // Verifica existe uma instância de conquista com aquele id
+  // Verifica se existe uma atribuição de conquista com aquele id
   exist(id) {
     return this.buscarPorId(id) ? true : false;
   }
@@ -47,8 +46,14 @@ class ConquistasDAO {
     conquistas.push(conquista);
     return parseInt(conquista.id);
   }
-
-  // Atualiza um conquista
+  // Deleta uma conquista
+  deletar(id) {
+    const index = conquistas.findIndex(conquista => conquista.id === id);
+    if (index !== -1) {
+      conquistas.splice(index, 1);
+    }
+  }
+  // Atualiza uma conquista
   atualizar(id, conquistaAtualizado) {
     const index = conquistas.findIndex(conquista => conquista.id === id);
     if (index !== -1) {
@@ -56,13 +61,6 @@ class ConquistasDAO {
     }
   }
 
-  // Deleta um conquista
-  deletar(id) {
-    const index = conquistas.findIndex(conquista => conquista.id === id);
-    if (index !== -1) {
-      conquistas.splice(index, 1);
-    }
-  }
 }
 
 module.exports = new ConquistasDAO();

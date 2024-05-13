@@ -10,7 +10,7 @@ class App {
   }
 
   middleweres() {
-    // Deixando uma pasta pública para usar CSS, imagens estáticas e Javascript
+    // Deixa a pasta pública para usar CSS, imagens estáticas e Javascript
     this.server.use(express.static('public'))
 
     // Configura o body-parser

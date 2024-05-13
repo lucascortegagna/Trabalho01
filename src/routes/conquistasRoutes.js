@@ -17,7 +17,4 @@ router.put('/:id', conquistasController.update);
 // Rota para deletar uma conquista (DELETE)
 router.delete('/:id', conquistasController.delete);
 
-// Rota para recalcular a classificação dos jogadores
-router.post('/recalcular-classificacao', conquistasController.recalcularClassificacao);
-
 module.exports = router;

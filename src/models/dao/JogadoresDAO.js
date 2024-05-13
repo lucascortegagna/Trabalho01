@@ -21,9 +21,8 @@ let jogadores = [
   new Jogador({ id: 17, nome: "Guilherme Santos", nickName: "gui_gamer", classificacao: 0, estatisticas: 17, conquistas: [3, 5] }),
   new Jogador({ id: 18, nome: "Isabela Lima", nickName: "isa_play", classificacao: 0, estatisticas: 18, conquistas: [1, 2] }),
   new Jogador({ id: 19, nome: "Thiago Costa", nickName: "thi_gamer", classificacao: 0, estatisticas: 19, conquistas: [4] }),
-  new Jogador({ id: 20, nome: "Amanda Pereira", nickName: "amandinha", classificacao: 0, estatisticas: 20, conquistas: [2, 3] })
+  new Jogador({ id: 20, nome: "Amanda Pereira", nickName: "amandinha", classificacao: 0, estatisticas: 20, conquistas: [2, 3] })
 ];
-
 
 class JogadoresDAO {
   // Retorna a lista de jogadores
@@ -31,12 +30,12 @@ class JogadoresDAO {
     return jogadores;
   }
 
-  // Retorna um jogador filtrado peloa sua ID
+  // Retorna um jogador filtrado pela sua ID
   buscarPorId(id) {
     return jogadores.find(jogador => jogador.id === id);
   }
 
-  // Verifica existe uma instância de jogadores com aquele id
+  // Verifica se existe uma atribuição de jogadores com aquela id
   exist(id) {
     return this.buscarPorId(id) ? true : false;
   }

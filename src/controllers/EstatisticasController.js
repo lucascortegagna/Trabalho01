@@ -1,41 +1,42 @@
 const Estatistica = require("../models/estatistica")
 const EstatisticasDAO = require('../models/dao/EstatisticasDAO');
-const JogadoresController = require("./JogadoresController");
 
 class EstatisticasController {
   // Cria uma nova estatistica (CREATE)
   create(req, res) {
-    let pontuacao = req.body.pontuacao;
+    let pontuação = req.body.pontuação;
     let jogosJogados = req.body.jogosJogados;
     let jogosVencidos = req.body.jogosVencidos;
     let jogosPerdidos = req.body.jogosPerdidos;
 
-    let estatistica = new Estatistica({ pontuacao, jogosJogados, jogosVencidos, jogosPerdidos });
+    let estatistica = new Estatistica(pontuação, jogosJogados, jogosVencidos, jogosPerdidos);
     let estatisticaId = EstatisticasDAO.criar(estatistica);
 
-    // Faz o response para o browser
-    if (estatisticaId)
-      res.status(201).json({ estatistica: EstatisticasDAO.buscarPorId(estatisticaId) })
+    // Faz o response para a página
+    if (estatisticaId) {
+      let estatistica = EstatisticasDAO.buscarPorId(estatisticaId)
+      estatistica.calculaEstatisticas()
+      res.status(201).json({ estatistica: estatistica })
+    }
     else
       res.status(500).json({ message: "Não foi possível criar um usuário" })
   }
 
   // Lista todas as estatisticas (READ)
   list(req, res) {
-    // Copia o array estatisticaes
+    // Copia o array estatisticas
     let listaEstatisticas = EstatisticasDAO.listar().slice()
 
-    // Faz o response para o browser
+    //Percorrer a lista calculando as estatisticas
+    for (const estatistica of listaEstatisticas) {
+      estatistica.calculaEstatisticas()
+    }
+
+    // Faz o response para a página
     if (listaEstatisticas.length === 0)
       res.status(200).json({ message: "Nenhum estatistica encontrado" })
-    else {
-      // Percorre o array listaEstatisticas
-      for (let estatistica of listaEstatisticas) {
-        // Recalcula as estatisticas
-        estatistica.calculaEstatistica()
-      }
+    else
       res.status(200).json({ estatisticas: listaEstatisticas })
-    }
   }
 
   // Mostrar um estatistica (READ)
@@ -43,9 +44,9 @@ class EstatisticasController {
     let id = req.params.id;
     let estatistica = EstatisticasDAO.buscarPorId(parseInt(id));
 
-    // Faz o response para o browser
+    // Faz o response para a página
     if (estatistica) {
-      estatistica.calculaEstatistica()
+      estatistica.calculaEstatisticas()
       res.status(200).json({ estatistica: estatistica });
     } else {
       res.status(404).json({ message: 'Estatistica não encontrado' });
@@ -62,17 +63,19 @@ class EstatisticasController {
       if (req.body.jogosVencidos !== undefined) estatistica.jogosVencidos = parseInt(req.body.jogosVencidos)
       if (req.body.jogosPerdidos !== undefined) estatistica.jogosPerdidos = parseInt(req.body.jogosPerdidos)
 
-      // Atualiza a estatitica na persistência
-      EstatisticasDAO.atualizar(id, estatistica)
+      //Calcula as estatisticas
+      estatistica.calculaEstatisticas()
 
-      // Atualiza classficação dos jogadores
-      JogadoresController.calculaClassificacao()
+      // Atualiza a estatitica
+
+      EstatisticasDAO.atualizar(id, estatistica)
 
       // Faz o response para o browser
       res.status(200).json({ estatistica: estatistica });
     }
     else {
-      // Faz o response para o browser
+      // Faz o response para a página
+
       res.status(404).json({ message: 'Estatistica não encontrado' });
     }
   }
@@ -84,11 +87,11 @@ class EstatisticasController {
     if (EstatisticasDAO.exist(id)) {
       EstatisticasDAO.deletar(id);
 
-      // Faz o response para o browser
+      // Faz o response para a página
       res.status(200).send()
     }
     else {
-      // Faz o response para o browser
+      // Faz o response para 
       res.status(404).json({ message: 'Estatistica não encontrado' });
     }
   }
